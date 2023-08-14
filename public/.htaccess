@@ -1,0 +1,8 @@
+RewriteEngine On
+
+# Définit dynamiquement l'URL de base du projet
+RewriteCond %{REQUEST_URI}::$1 ^(/.+)/(.*)::\2$
+RewriteRule ^(.*) - [E=BASE_URL:%1]
+
+# On va faire en sorte que tous ce qu'on tape apres le /nimportequoi soit interprété comme ceci : http://localhost/../public/index.php?page=nimportequoi et ce peu importe ce qu'on tape
+RewriteRule ^([a-zA-Z0-9]+)$ index.php?page=$1

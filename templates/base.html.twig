@@ -1,22 +1,107 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
-        {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
-        {% block stylesheets %}
-            {{ encore_entry_link_tags('app') }}
-        {% endblock %}
+<!doctype html>
+<html lang="fr">
 
-        {% block javascripts %}
-            {{ encore_entry_script_tags('app') }}
-        {% endblock %}
-    </head>
-    <body>
-     <p>Je suis le layout, je suis partout :)</p>
-        {% block body %}
-     <p>Je suis dans le layout, mais je peux me faire ecraser</p>           
-        {% endblock %}
-    </body>
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    {% block stylesheets %}<!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+    <!-- Bootstrap icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <!-- Our custom CSS -->
+    <link rel="stylesheet" href="{{ asset('css/oflix.css') }}">
+    <!-- favicon -->
+    <link rel="shortcut icon" href="{{ asset('images/favicon.png') }}" type="image/x-icon">
+    {% endblock %}
+
+    <title>O'flix</title>
+</head>
+
+<body>
+    {{ include('_navbar.html.twig') }}
+<div class="container-xl bg-light p-5 border-top">
+
+        <div class="row mb-2">
+
+            <h2 class="text-muted fw-bold mb-4">Ma liste</h2>
+
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong>A bug's life</strong> a été ajouté à votre liste de favoris.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+
+            <div class="col-6">
+
+                <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm bg-white position-relative">
+                    <div class="col-4 movie__poster" style="background-image: url(https://m.media-amazon.com/images/M/MV5BNThmZGY4NzgtMTM4OC00NzNkLWEwNmEtMjdhMGY5YTc1NDE4XkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg);">
+                        <img src="images/poster-placeholder.png" class="img-fluid">
+                        <!-- img src="https://m.media-amazon.com/images/M/MV5BNThmZGY4NzgtMTM4OC00NzNkLWEwNmEtMjdhMGY5YTc1NDE4XkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg" class="img-fluid" -->
+                    </div>
+                    <div class="col-8 p-4 d-flex flex-column position-static">
+                        <a href="" class="movie__favorite fs-1 my-2 mx-3 link-danger"><i class="bi bi-bookmark-x-fill"></i></a>
+                        <strong class="d-inline-block mb-2 text-primary">Film</strong>
+                        <h3 class="mb-1">A Bug's Life</h3>
+                        <div class="mb-1 text-muted">93 min</div>
+                        <a href="./show.html" class="fs-1 mt-3 text-danger align-self-start">
+                            <i class="bi bi-arrow-right-square"></i>
+                        </a>
+                    </div>
+                </div>
+            
+            </div>
+
+            <div class="col-6">
+
+                <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm bg-white position-relative">
+                    <div class="col-4 movie__poster" style="background-image: url(https://m.media-amazon.com/images/M/MV5BYTRiNDQwYzAtMzVlZS00NTI5LWJjYjUtMzkwNTUzMWMxZTllXkEyXkFqcGdeQXVyNDIzMzcwNjc@._V1_SX300.jpg);">
+                        <!-- img src="https://m.media-amazon.com/images/M/MV5BYTRiNDQwYzAtMzVlZS00NTI5LWJjYjUtMzkwNTUzMWMxZTllXkEyXkFqcGdeQXVyNDIzMzcwNjc@._V1_SX300.jpg"
+                            class="img-fluid" -->
+                        <img src="images/poster-placeholder.png" alt="">
+                    </div>
+                    <div class="col-8 p-4 d-flex flex-column position-static">
+                        <a href="" class="movie__favorite fs-1 my-2 mx-3 link-danger"><i class="bi bi-bookmark-x-fill"></i></a>
+                        <strong class="d-inline-block mb-2 text-success">Série</strong>
+                        <h4 class="mb-1">Game of Thrones</h4>
+                        <div class="mb-1 text-muted">52 min</div>
+                        <a href="" class="fs-1 mt-3 text-danger align-self-start">
+                            <i class="bi bi-arrow-right-square"></i>
+                        </a>
+                        
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-6">
+
+                <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm bg-white position-relative">
+                    <div class="col-4 movie__poster" style="background-image: url(https://m.media-amazon.com/images/M/MV5BN2ZmYjg1YmItNWQ4OC00YWM0LWE0ZDktYThjOTZiZjhhN2Q2XkEyXkFqcGdeQXVyNjgxNTQ3Mjk@._V1_SX300.jpg);">
+                        <!-- img src="https://m.media-amazon.com/images/M/MV5BYTRiNDQwYzAtMzVlZS00NTI5LWJjYjUtMzkwNTUzMWMxZTllXkEyXkFqcGdeQXVyNDIzMzcwNjc@._V1_SX300.jpg"
+                            class="img-fluid" -->
+                        <img src="images/poster-placeholder.png" alt="">
+                    </div>
+                    <div class="col-8 p-4 d-flex flex-column position-static">
+                        <a href="" class="movie__favorite fs-1 my-2 mx-3 link-danger"><i class="bi bi-bookmark-x-fill"></i></a>
+                        <strong class="d-inline-block mb-2 text-success">Série</strong>
+                        <h4 class="mb-1">Stranger Things</h4>
+                        <div class="mb-1 text-muted">50 min</div>
+                        <a href="" class="fs-1 mt-3 text-danger align-self-start">
+                            <i class="bi bi-arrow-right-square"></i>
+                        </a>
+                        
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col">
+            <a href="" class="btn btn-danger btn-sm" onclick="return confirm('Vider votre liste de favoris ?');">Vider la liste</a>
+        </div>
+
+    </div>
+</body>
 </html>
+   
