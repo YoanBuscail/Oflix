@@ -3,19 +3,16 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class FavoritesController extends AbstractController
 {
     /**
-     * Page favoris du site
-     * Ci dessous on appelle ca une annotation
-     * 
-     * @Route("/favorites")
+     * @Route("/favorites", name="app_favorites")
      */
-    public function home()
+    public function index(): Response
     {
-        // Afficher quelque chose
-        return $this->render("main/favorites.html.twig");
+        return $this->render('favorites/index.html.twig');
     }
 }
