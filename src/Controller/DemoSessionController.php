@@ -27,7 +27,7 @@ class DemoSessionController extends AbstractController
     /**
      * Fonction d'ajout d'utilisateur dans notre session
      *
-     * @Route ("/demo/session/{name}, name="app_demo_session_add")
+     * @Route("/demo/session/{name}", name="app_demo_session_add")
      * doc : https://symfony.com/doc/5.4/session.html#basic-usage
      */
     public function add(Request $request, $name)
