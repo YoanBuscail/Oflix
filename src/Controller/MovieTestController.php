@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Movie;
+use App\Entity\Season;
 use App\Repository\MovieRepository;
 use DateTime;
 use Doctrine\Persistence\ManagerRegistry;
@@ -37,16 +38,25 @@ class MovieTestController extends AbstractController
 
         // $movie est un objet de l'entité Movie
         // On va donner des valeurs aux propriétés de $movie grace aux setters de l'entité Movie
-        // On initialise le titre du film grace au setter setTitle()
-        $movie->setTitle('E.T');
-        // On initialise la date de sortie du film grace au setter setReleaseDate()
-        // new DateTime('2023-08-18') permet de créer une date -> on fait ca pour la compatibilité a la bdd
-        $movie->setReleaseDate(new DateTime('1982-12-16'));
-        // On initialise la durée du film grace au setter setDuration()
-        $movie->setDuration(115);
+        $movie->setTitle('Stranger Things');
+        $movie->setReleaseDate(new DateTime('2018-05-15'));
+        $movie->setDuration(50);
 
+        // Pour créer une saison a Stranger Things ...
+        $s1 = new Season();
+        $s1->setNumber(1); // LA saison 1
+        $s1->setEpisodesNumber(6); // 6 épisodes dans la saison 1
+        $s1->setMovie($movie); // Le Movie associé a $s1 sera $movie (donc stranger things)
+
+        $s2 = new Season();
+        $s2->setNumber(2); // LA saison 2
+        $s2->setEpisodesNumber(7); // 7 épisodes dans la saison 1
+        $s2->setMovie($movie); // Le Movie associé a $s2 sera $movie (donc stranger things)
+        
         // La methode persist permet de sauvegarder l'entité donnée en parametre ($movie) sans pour autant executer la requete sql
         $entityManager->persist($movie);
+        $entityManager->persist($s1);
+        $entityManager->persist($s2);
 
         // flush ci dessous va s'occuper d'executer toutes les requetes sql qu'on doit executer
         $entityManager->flush();

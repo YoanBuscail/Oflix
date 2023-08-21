@@ -1,4 +1,17 @@
 # Commandes
+
+## !! Faire dans cet ordre !!
+```bash
+composer require symfony/messenger
+composer require doctrine/annotations
+composer require symfony/webapp-pack
+```
+composer require symfony/webapp-pack installe toutes les dépendances ci-dessous d'un coup
+Il faut quand même installer :
+```bash
+composer require symfony/apache-pack
+```
+
 ## Installer le maker de symfony
 ```bash
 # https://symfony.com/bundles/SymfonyMakerBundle/current/index.html
@@ -52,3 +65,19 @@ composer require symfony/twig-bundle
 composer require symfony/orm-pack
 composer require --dev symfony/maker-bundle
 ```
+
+## Installer toutes les dépendances d'un coup
+```bash
+composer require symfony/webapp-pack
+```
+et si message d'erreur pour les annotations 
+```bash
+composer require doctrine/annotations
+```
+
+## Clear cache
+```bash
+php bin/console cache:clear
+```
+
+(pour ceux qui veulent tester le make:crud il faut installer composer require sensio/framework-extra-bundle)
