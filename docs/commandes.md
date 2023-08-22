@@ -80,4 +80,15 @@ composer require doctrine/annotations
 php bin/console cache:clear
 ```
 
-(pour ceux qui veulent tester le make:crud il faut installer composer require sensio/framework-extra-bundle)
+## (pour ceux qui veulent tester le make:crud il faut installer composer require sensio/framework-extra-bundle)
+
+# Méthode sauvage pour faire fonctionner les migrations
+
+## On supprime la database
+`bin/console doctrine:database:drop --force`
+## On recrée la database
+`bin/console doctrine:database:create`
+## Si les fichiers de migrations ne sont pas à jour, on les créée
+`bin/console make:migration`
+## On éxécute les migration (migrate)
+`bin/console doctrine:migrations:migrate`

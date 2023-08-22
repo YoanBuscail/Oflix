@@ -39,11 +39,42 @@ class Movie
      */
     private $seasons;
 
+    /**
+     * @ORM\Column(type="string", length=10)
+     */
+    private $type;
+
+    /**
+     * @ORM\Column(type="string", length=200)
+     */
+    private $summary;
+
+    /**
+     * @ORM\Column(type="string", length=5000)
+     */
+    private $synopsis;
+
+    /**
+     * @ORM\Column(type="string", length=2083, nullable=true)
+     */
+    private $poster;
+
+    /**
+     * @ORM\Column(type="decimal", precision=2, scale=1, nullable=true)
+     */
+    private $rating;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Genre::class, mappedBy="movies")
+     */
+    private $genres;
+
     public function __construct()
     {
         // Une collection c'est un super tableau PHP
         // Ici, grace a doctrine, on va récupérer les saisons associés à une entité Movie sous forme de collection, donc de super tableau.
         $this->seasons = new ArrayCollection();
+        $this->genres = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -112,6 +143,93 @@ class Movie
             if ($season->getMovie() === $this) {
                 $season->setMovie(null);
             }
+        }
+
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): self
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    public function getSummary(): ?string
+    {
+        return $this->summary;
+    }
+
+    public function setSummary(string $summary): self
+    {
+        $this->summary = $summary;
+
+        return $this;
+    }
+
+    public function getSynopsis(): ?string
+    {
+        return $this->synopsis;
+    }
+
+    public function setSynopsis(string $synopsis): self
+    {
+        $this->synopsis = $synopsis;
+
+        return $this;
+    }
+
+    public function getPoster(): ?string
+    {
+        return $this->poster;
+    }
+
+    public function setPoster(?string $poster): self
+    {
+        $this->poster = $poster;
+
+        return $this;
+    }
+
+    public function getRating(): ?string
+    {
+        return $this->rating;
+    }
+
+    public function setRating(?string $rating): self
+    {
+        $this->rating = $rating;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Genre>
+     */
+    public function getGenres(): Collection
+    {
+        return $this->genres;
+    }
+
+    public function addGenre(Genre $genre): self
+    {
+        if (!$this->genres->contains($genre)) {
+            $this->genres[] = $genre;
+            $genre->addMovie($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGenre(Genre $genre): self
+    {
+        if ($this->genres->removeElement($genre)) {
+            $genre->removeMovie($this);
         }
 
         return $this;

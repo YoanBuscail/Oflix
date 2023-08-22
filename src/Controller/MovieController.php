@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Model\Movies;
+use App\Repository\MovieRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -21,9 +22,10 @@ class MovieController extends AbstractController
      * Ci dessous dans ma route, je dis que j'attends un parametre {id} qui va correspondre à l'index du film que je veux afficher dans le tableau
      * @Route("/movie/show/{id}", name="app_movie_show")
      */
-    public function show($id)
+    public function show($id, MovieRepository $movieRepository)
     {
-        $movie = Movies::getMovieById($id);
+        $movie = $movieRepository->find($id);
+        
         if ($movie === null) {
             throw $this->createNotFoundException('Film ou série non trouvé.');
         }
