@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Model\Movies;
+use App\Repository\CastingRepository;
 use App\Repository\MovieRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -25,12 +26,14 @@ class MovieController extends AbstractController
     public function show($id, MovieRepository $movieRepository)
     {
         $movie = $movieRepository->find($id);
-        
+        $castings = $movie->getCastings();
+
         if ($movie === null) {
             throw $this->createNotFoundException('Film ou série non trouvé.');
         }
         return $this->render('movie/show.html.twig', [
-            'movie' => $movie
+            'movie' => $movie,
+            'castings' => $castings
         ]);
     }
 }

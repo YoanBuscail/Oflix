@@ -69,12 +69,19 @@ class Movie
      */
     private $genres;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Casting::class, mappedBy="movie", orphanRemoval=true)
+     * @ORM\OrderBy({"credit_order" = "ASC"})
+     */
+    private $castings;
+
     public function __construct()
     {
         // Une collection c'est un super tableau PHP
         // Ici, grace a doctrine, on va récupérer les saisons associés à une entité Movie sous forme de collection, donc de super tableau.
         $this->seasons = new ArrayCollection();
         $this->genres = new ArrayCollection();
+        $this->castings = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -230,6 +237,36 @@ class Movie
     {
         if ($this->genres->removeElement($genre)) {
             $genre->removeMovie($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Casting>
+     */
+    public function getCastings(): Collection
+    {
+        return $this->castings;
+    }
+
+    public function addCasting(Casting $casting): self
+    {
+        if (!$this->castings->contains($casting)) {
+            $this->castings[] = $casting;
+            $casting->setMovie($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCasting(Casting $casting): self
+    {
+        if ($this->castings->removeElement($casting)) {
+            // set the owning side to null (unless already changed)
+            if ($casting->getMovie() === $this) {
+                $casting->setMovie(null);
+            }
         }
 
         return $this;
