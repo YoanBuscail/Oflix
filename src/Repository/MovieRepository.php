@@ -39,6 +39,23 @@ class MovieRepository extends ServiceEntityRepository
         }
     }
 
+    /**
+     * Récupère tous les films et trie le resultat dans l'ordre alphabétique des titres
+     * Requêtes customisé en DQL
+     */
+    public function findAllOrderByTitleAscDql()
+    {
+        // Ci dessous on utilise le query builder pour créer une requête DQL similaire a celle ci :
+        // SELECT m FROM App\Entity\Movie m ORDER BY m.title ASC
+        // La methode setMaxResults(2) permet de limiter le nombre de résultat 
+        return $this->createQueryBuilder('m')
+        ->add('from', 'App\Entity\Movie m')
+        ->add('orderBy', 'm.title ASC')
+        ->getQuery()
+        ->setMaxResults(2)
+        ->getResult();
+    }
+
 //    /**
 //     * @return Movie[] Returns an array of Movie objects
 //     */

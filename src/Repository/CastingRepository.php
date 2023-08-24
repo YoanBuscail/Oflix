@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Casting;
+use App\Entity\Movie;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -37,6 +38,26 @@ class CastingRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return void
+     */
+    public function findAllForMovieJoinedToPersonOrderedByCreditAscDql(Movie $movie)
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT c, p
+            FROM App\Entity\Casting AS c
+            INNER JOIN c.person AS p
+            WHERE c.movie = :movie
+            ORDER BY c.credit_order ASC'
+        )->setParameter('movie', $movie);
+
+        return $query->getResult();
     }
 
 //    /**
