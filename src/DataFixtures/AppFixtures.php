@@ -2,16 +2,20 @@
 
 namespace App\DataFixtures;
 
+use Faker\Factory;
+use App\DataFixtures\Provider\OflixProvider;
+use App\Entity\Casting;
+use DateTime;
 use App\Entity\Genre;
 use App\Entity\Movie;
+use App\Entity\Person;
 use App\Entity\Season;
-use DateTime;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 
 class AppFixtures extends Fixture
 {
-        /**
+    /**
      * Fonction qui va s'executer quand on va charger les fixtures (envoyer les données en bdd)
      *
      * @param ObjectManager $manager
@@ -22,44 +26,78 @@ class AppFixtures extends Fixture
         // $product = new Product();
         // $manager->persist($product);
 
-         // un tableau vide pur stocker nos
+        // On crée une instance de Faker 
+        // Lors de l'instanciation on définit la localisation => français
+        // Ici on créer un faker français tt simplement
+        $faker = Factory::create('fr_FR');
+
+        // On instancie notre Provider (fournisseur de données) OflixProvider
+        $provider = New OflixProvider();
+
+         // un tableau vide pour stocker nos genre
          $genreList = [];
 
+         // Boucle 20 fois pour créer 20 genres
          for ($i = 1; $i <= 20; $i++) {
              // on crée une entité
              $genre = new Genre();
-             // on la met à jour
-             $genre->setName('Genre #' . $i);
+             // on lui définit un nom qu'on récupère depuis le provider
+             $genre->setName($provider->movieGenre());
  
-             // on l'ajoute à sa liste
+             // on l'ajoute à notre tableau $genreList[]
              $genreList[] = $genre;
  
              // on persist l'entité, avec l'entity manager fourni
              $manager->persist($genre);
          }
+
+         // On créer un tableau ou on va ajouter 100 acteurs
+         $personList = [];
+         // On ajoute 100 Person (Acteurs)
+         for ($p = 1; $p <= 100; $p++) {
+            // Nouvelle Person
+            $person = new Person();
+            // On définit son prenom
+            $person->setFirstname($faker->firstName());
+            // On définit son Nom
+            $person->setLastname($faker->lastName());
+            $personList[] = $person;
+            // On persiste
+            $manager->persist($person);
+         }
  
          // dump($genreList);
  
-         // 20 films/séries
+         // On boucle 20 fois pour créer 20 films/séries
          for ($m = 1; $m <= 20; $m++) {
- 
+            // On créer une instance de l'entité Movie (On créer un film)
              $movie = new Movie();
-             // on met à jour ses propriétés
-             $movie->setTitle('Film #' . $m);
-             // 1 chance sur 2 que ce soit un film => 'Film' ou 'Série'
-             $type = mt_rand(0, 1) === 1 ? 'Film' : 'Série';
+             // on définit un titre au film à l'aide du provider
+             $movie->setTitle($provider->movieTitle());
+           
+             /* $type = mt_rand(0, 1) === 1 ? 'Film' : 'Série'; */
+             $type = $faker->randomElement(['Film', 'Série']);
+             // Définit le type
              $movie->setType($type);
-             $movie->setReleaseDate(new DateTime('2018-05-15'));
-             $movie->setDuration(50);
-             $movie->setPoster('https://m.media-amazon.com/images/M/MV5BN2ZmYjg1YmItNWQ4OC00YWM0LWE0ZDktYThjOTZiZjhhN2Q2XkEyXkFqcGdeQXVyNjgxNTQ3Mjk@._V1_SX300.jpg');
-             $movie->setRating(4.8);
-             $movie->setSummary('1983, à Hawkins dans l\'Indiana. Après la disparition d\'un garçon de 12 ans dans des circonstances mystérieuses, la petite ville du Midwest est témoin d\'étranges phénomènes.');
-             $movie->setSynopsis('A Hawkins, en 1983 dans l\'Indiana. Lorsque Will Byers disparaît de son domicile, ses amis se lancent dans une recherche semée d’embûches pour le retrouver. Dans leur quête de réponses, les garçons rencontrent une étrange jeune fille en fuite. Les garçons se lient d\'amitié avec la demoiselle tatouée du chiffre "11" sur son poignet et au crâne rasé et découvrent petit à petit les détails sur son inquiétante situation. Elle est peut-être la clé de tous les mystères qui se cachent dans cette petite ville en apparence tranquille…');
+             // Définit la date de sortie en utilisant faker => sortie il y a 100 ans
+             $movie->setReleaseDate($faker->dateTimeBetween('-100 year'));
+             // Définit la durée
+             $movie->setDuration($faker->numberBetween(20, 300));
+             // Définit l'image du film
+             $movie->setPoster($faker->imageUrl(520, 740, $movie->getTitle()));
+             // Définit une note
+             $movie->setRating($faker->randomFloat(1, 0, 5));
+             // Définit un court résumé
+             $movie->setSummary($faker->text(100));
+             // Définit un résumé
+             $movie->setSynopsis($faker->text(200));
  
              // ici on va associer un ou des genres au film courant
              // par ex. le 1er de la liste
              // @todo à randomiser : par ex. de 1 à 3 genres au hasard
-             $movie->addGenre($genreList[0]);
+             for ($g = 1; $g <= mt_rand(1,3); $g++) {
+                $movie->addGenre($genreList[mt_rand(1,19)]);
+              }
  
              // les saisons POUR LES SAISONS
              // @todo à randomiser : par ex. un nombre de saions au hasard avec nbres d'épisodes au hasard
@@ -71,6 +109,19 @@ class AppFixtures extends Fixture
              // on persiste la saison
              $manager->persist($season);
  
+             // On ajoute 3 à 5 casting par film créée au hasard 
+             for ($c = 1; $c <= mt_rand(3,5); $c++) {
+                // On créer une instance de l'entité Casting
+                $casting = new Casting();
+                // On définit le rôle de ce casting
+                $casting->setRole($faker->name());
+                // On définit l'ordre d'importance de ce casting
+                $casting->setCreditOrder($c);
+                // On définit les 2 associations de Casting : movie et person
+                $casting->setMovie($movie);
+                $casting->setPerson($personList[$c]);
+                $manager->persist($casting);
+             }
              $manager->persist($movie);
          }
 
