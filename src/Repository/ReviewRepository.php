@@ -2,9 +2,10 @@
 
 namespace App\Repository;
 
+use App\Entity\Movie;
 use App\Entity\Review;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<Review>
@@ -37,6 +38,15 @@ class ReviewRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    public function findReviewsForMovie(Movie $movie)
+    {
+        return $this->createQueryBuilder('r')
+            ->where('r.movie = :movie')
+            ->setParameter('movie', $movie)
+            ->getQuery()
+            ->getResult();
     }
 
 //    /**
