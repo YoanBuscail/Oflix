@@ -6,43 +6,59 @@ use App\Entity\Review;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class ReviewType extends AbstractType
 {
+    /**
+     * Création du formulaire
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('username', TextType::class)
-            ->add('email', EmailType::class)
-            ->add('content', TextareaType::class)
+            ->add('username', TextType::class, [
+                'label' => 'Nom'
+                ])
+            ->add('email', EmailType::class, [
+                'label' => 'Courriel'
+            ])
+            ->add('content', TextareaType::class, [
+                'label' => 'Critique'
+            ])
             ->add('rating', ChoiceType::class, [
                 'choices' => [
-                    'Excellent' => 'Excellent',
-                    'Très bon' => 'Très bon',
-                    'Bon' => 'Bon',
-                    'Peut mieux faire' => 'Peut mieux faire',
-                    'À éviter' => 'À éviter',
+                    'Excellent' => 5,
+                    'Très bon' => 4,
+                    'Bon' => 3,
+                    'Peut mieux faire' => 2,
+                    'A éviter' => 1,
                 ],
-                'expanded' => true,
-                'multiple' => false,
+                'placeholder' => 'Votre choix ...'
             ])
             ->add('reactions', ChoiceType::class, [
-                'choices' => [
+                'choices'  => [
                     'Rire' => 'Rire',
                     'Pleurer' => 'Pleurer',
                     'Réfléchir' => 'Réfléchir',
                     'Dormir' => 'Dormir',
                     'Rêver' => 'Rêver',
                 ],
-                'expanded' => true,
+                // Les reactions sont un tableau, on aura la possibilité d'avoir plusieurs choix ici
                 'multiple' => true,
+                // Pour que chaque chois soit prit en compte, on ajoute ...
+                'expanded' => true
             ])
             ->add('watchedAt', DateType::class, [
-                'widget' => 'single_text',
-                'html5' => false,
-                'format' => 'yyyy-MM-dd',
+                'label' => 'Vous avez vu ci film le ...',
+                // Pour indiquer que le format de la propriété $watchedAt est une datetimeimmutable, on ajoute
+                'input' => 'datetime_immutable'
             ])
-            ->add('movie')
+            // Pas besoin de movie car deja présent dans l'URL
+            // ->add('movie')
         ;
     }
 

@@ -17,13 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+
 
 class MovieController extends AbstractController
 {
@@ -49,7 +43,7 @@ class MovieController extends AbstractController
         $movie = $movieRepository->find($id);
         // On recupere les casting d'un film en une seule requete
         $castings = $castingRepository->findAllForMovieJoinedToPersonOrderedByCreditAscDql($movie);
-        $reviews = $reviewRepository->findReviewsForMovie($movie);
+        $reviews = $reviewRepository->findBy(['movie' => $movie], ['watchedAt' => 'DESC']);
 
         if ($movie === null) {
             throw $this->createNotFoundException('Film ou série non trouvé.');
@@ -59,71 +53,6 @@ class MovieController extends AbstractController
             'castings' => $castings,
             'reviews'=> $reviews
         ]);
-    }
-
-    /**
-     * @Route("/movie/{id}/review/create", name="app_create_review")
-     */
-    public function createReview(Request $request, Movie $movie, ManagerRegistry $doctrine, ReviewRepository $reviewRepository): Response
-    {
-        // Crée une instance de la classe de formulaire
-        $review = new Review();
-        /* $form = $this->createForm(ReviewType::class, $review); */
-
-        $form = $this->createFormBuilder($review)
-        ->add('username', TextType::class)
-        ->add('email', EmailType::class)
-        ->add('content', TextareaType::class)
-        ->add('rating', ChoiceType::class, [
-            'choices' => [
-                '1' => '1',
-                '2' => '2',
-                '3' => '3',
-                '4' => '4',
-                '5' => '5',
-            ],
-            'expanded' => true,
-            'multiple' => false,
-        ])
-        ->add('reactions', ChoiceType::class, [
-            'choices' => [
-                'Rire' => 'Rire',
-                'Pleurer' => 'Pleurer',
-                'Réfléchir' => 'Réfléchir',
-                'Dormir' => 'Dormir',
-                'Rêver' => 'Rêver',
-            ],
-            'expanded' => true,
-            'multiple' => true,
-        ])
-        ->add('watchedAt', DateType::class, [
-            'widget' => 'single_text',
-            'html5' => false,
-            'format' => 'dd-MM-yyyy',
-            'input' => 'datetime_immutable',
-        ])
-        ->getForm();
-
-        // Traite la soumission du formulaire
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            // Associe la critique au film
-            $review->setMovie($movie);
-
-            // Enregistre la critique dans la base de données
-            $entityManager = $doctrine->getManager();
-            $entityManager->persist($review);
-            $entityManager->flush();
-
-            // Redirige l'utilisateur vers la page du film après avoir ajouté la critique
-            return $this->redirectToRoute('app_movie_show', ['id' => $movie->getId()]);
-        }
-
-        return $this->render('movie/review.html.twig', [
-            'form' => $form->createView(),
-            'movie' => $movie,
-        ]);
-    }
-    
+    } 
     
 }

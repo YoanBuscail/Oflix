@@ -40,15 +40,6 @@ class ReviewRepository extends ServiceEntityRepository
         }
     }
 
-    public function findReviewsForMovie(Movie $movie)
-    {
-        return $this->createQueryBuilder('r')
-            ->where('r.movie = :movie')
-            ->setParameter('movie', $movie)
-            ->getQuery()
-            ->getResult();
-    }
-
 //    /**
 //     * @return Review[] Returns an array of Review objects
 //     */

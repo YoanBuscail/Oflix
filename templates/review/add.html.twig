@@ -6,15 +6,13 @@
 <div class="container">
     <h1>Ajouter une critique pour {{ movie.title }}</h1>
 
+    {# Ouverture de balise form #}
     {{ form_start(form) }}
-    {{ form_row(form.username) }}
-    {{ form_row(form.email) }}
-    {{ form_row(form.content) }}
-    {{ form_row(form.rating) }}
-    {{ form_row(form.reactions) }}
-    {{ form_row(form.watchedAt) }}
+        {{ form_widget(form) }}
 
-    <button type="submit" class="btn btn-primary">Ajouter la critique</button>
+    {# On ajoute manuellement le bouton submit #}
+    <button type="submit" class="btn btn-success">Ajouter la critique</button>
+    {# Fermeture du formulaire #}
     {{ form_end(form) }}
 </div>
 {% endblock %}
