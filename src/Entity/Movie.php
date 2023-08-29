@@ -6,6 +6,7 @@ use App\Repository\MovieRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=MovieRepository::class)
@@ -21,41 +22,50 @@ class Movie
 
     /**
      * @ORM\Column(type="string", length=255)
+     * Ci dessous on ajoute une contrainte de validation => on veut ne veut pas que ce champ soit vide
+     * @Assert\NotBlank
      */
     private $title;
 
     /**
      * @ORM\Column(type="date")
+     * @Assert\NotBlank
      */
     private $releaseDate;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\NotBlank
      */
     private $duration;
 
     /**
      * @ORM\OneToMany(targetEntity=Season::class, mappedBy="movie")
+     * @Assert\NotBlank
      */
     private $seasons;
 
     /**
      * @ORM\Column(type="string", length=10)
+     * @Assert\NotBlank
      */
     private $type;
 
     /**
      * @ORM\Column(type="string", length=200)
+     * @Assert\NotBlank
      */
     private $summary;
 
     /**
      * @ORM\Column(type="string", length=5000)
+     * @Assert\NotBlank
      */
     private $synopsis;
 
     /**
      * @ORM\Column(type="string", length=2083, nullable=true)
+     * @Assert\NotBlank
      */
     private $poster;
 
@@ -65,7 +75,7 @@ class Movie
     private $rating;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Genre::class, mappedBy="movies")
+     * @ORM\ManyToMany(targetEntity=Genre::class, inversedBy="movies")
      */
     private $genres;
 
