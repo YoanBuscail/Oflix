@@ -92,3 +92,6 @@ php bin/console cache:clear
 `bin/console make:migration`
 ## On éxécute les migration (migrate)
 `bin/console doctrine:migrations:migrate`
+
+## security
+`composer require symfony/security-bundle`
