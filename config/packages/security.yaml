@@ -35,7 +35,13 @@ security:
     access_control:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
+        - { path: ^/movie/\\d+/review/add, roles: ROLE_USER}
         - { path: ^/back, roles: ROLE_ADMIN }
+        - { path: ^/back/movie, roles: ROLE_MANAGER}
+        - { path: ^/back/movie/\\d+, roles: ROLE_MANAGER}
+        
+        - { path: ^/, roles: IS_AUTHENTICATED_ANONYMOUSLY}
+        - { path: ^/movie/show/\\d+, roles: IS_AUTHENTICATED_ANONYMOUSLY}
 
 when@test:
     security:

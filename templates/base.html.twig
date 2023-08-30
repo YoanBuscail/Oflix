@@ -46,24 +46,26 @@
                     </li>
                 </ul>
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    {% if app.user %}
+                    <!-- Utilisateur connecté : Afficher le bouton "Déconnexion" -->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                             data-bs-toggle="dropdown">
-                            <span>Charles</span>
+                            <span>{{ app.user.username }}</span>
                             <i class="bi bi-person-square"></i>
                         </a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="#">Profil</a></li>
-                            <li><a class="dropdown-item" href="#">Backoffice</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" href="#">Déconnexion</a></li>
+                            <li><a class="dropdown-item btn btn-danger" href="{{ path('app_security_logout') }}">Déconnexion</a></li>
                         </ul>
                     </li>
+                {% else %}
+                    <!-- Utilisateur non connecté : Afficher le bouton "Connexion" -->
+                    <li class="nav-item">
+                        <a class="btn btn-danger me-2" href="{{ path('app_security_login') }}" >Connexion</a>
+                    </li>
+                {% endif %}
                 </ul>
-
-                <button type="button" class="btn btn-danger me-2">Connexion</button>
 
                 <form class="d-flex" action="list.html">
                     <input class="form-control form-control-sm me-2" name="search" type="search" placeholder="Rechercher...">
