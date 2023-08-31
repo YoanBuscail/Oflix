@@ -33,15 +33,20 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
-        - { path: ^/movie/\\d+/review/add, roles: ROLE_USER}
-        - { path: ^/back, roles: ROLE_ADMIN }
-        - { path: ^/back/movie, roles: ROLE_MANAGER}
-        - { path: ^/back/movie/\\d+, roles: ROLE_MANAGER}
+    # * Ici je bloque l'accès à l'ajout d'une review sauf si on est user
+        - { path: ^/movie/\d+/review/add, roles: ROLE_USER }
+        - { path: ^/favorites, roles: ROLE_USER }
+    # * On sécurise les routes du back office add / delete et edit 
+        - { path: ^/back.*(new|edit), roles: ROLE_ADMIN }
+        - { path: ^/back, roles: ROLE_ADMIN, methods: POST}
+    # * J'ouvre le back office à condition d'être au minimum manager
+        - { path: ^/back, roles: ROLE_MANAGER}
         
-        - { path: ^/, roles: IS_AUTHENTICATED_ANONYMOUSLY}
-        - { path: ^/movie/show/\\d+, roles: IS_AUTHENTICATED_ANONYMOUSLY}
+    # Il est possible de faire de l'héritage de role
+    role_hierarchy:
+        ROLE_ADMIN: ROLE_MANAGER
+        ROLE_MANAGER: ROLE_USER
+
 
 when@test:
     security:

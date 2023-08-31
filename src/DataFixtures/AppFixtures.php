@@ -2,19 +2,30 @@
 
 namespace App\DataFixtures;
 
-use Faker\Factory;
-use App\DataFixtures\Provider\OflixProvider;
-use App\Entity\Casting;
 use DateTime;
+use Faker\Factory;
+use App\Entity\User;
 use App\Entity\Genre;
 use App\Entity\Movie;
 use App\Entity\Person;
 use App\Entity\Season;
+use App\Entity\Casting;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use App\DataFixtures\Provider\OflixProvider;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+
 
 class AppFixtures extends Fixture
 {
+
+    private $passwordHasher;
+
+    public function __construct(UserPasswordHasherInterface $passwordHasher)
+    {
+        $this->passwordHasher = $passwordHasher;
+    }
+
     /**
      * Fonction qui va s'executer quand on va charger les fixtures (envoyer les données en bdd)
      *
@@ -23,9 +34,6 @@ class AppFixtures extends Fixture
      */
     public function load(ObjectManager $manager): void
     {
-        // $product = new Product();
-        // $manager->persist($product);
-
         // On crée une instance de Faker 
         // Lors de l'instanciation on définit la localisation => français
         // Ici on créer un faker français tt simplement
@@ -33,6 +41,34 @@ class AppFixtures extends Fixture
 
         // On instancie notre Provider (fournisseur de données) OflixProvider
         $provider = New OflixProvider();
+
+        //  ! USERS
+        $admin = new User;
+        $admin->setEmail("admin@oclock.io");
+        $admin->setRoles(["ROLE_ADMIN"]);
+        // ici j'utilise le passwordhasher pour hasher le mot de passe par rapport à mes infos dans le security.yaml
+        // ! SI PAS DE HASH, L'auth ne peut pas marcher
+        $admin->setPassword($this->passwordHasher->hashPassword($admin, "admin"));
+
+        $manager->persist($admin);
+
+        $userManager = new User;
+        $userManager->setEmail("manager@oclock.io");
+        $userManager->setRoles(["ROLE_MANAGER"]);
+        // ici j'utilise le passwordhasher pour hasher le mot de passe par rapport à mes infos dans le security.yaml
+        // ! SI PAS DE HASH, L'auth ne peut pas marcher
+        $userManager->setPassword($this->passwordHasher->hashPassword($admin, "manager"));
+
+        $manager->persist($userManager);
+
+        $user = new User;
+        $user->setEmail("user@oclock.io");
+        $user->setRoles(["ROLE_USER"]);
+        // ici j'utilise le passwordhasher pour hasher le mot de passe par rapport à mes infos dans le security.yaml
+        // ! SI PAS DE HASH, L'auth ne peut pas marcher
+        $user->setPassword($this->passwordHasher->hashPassword($admin, "user"));
+
+        $manager->persist($user);
 
          // un tableau vide pour stocker nos genre
          $genreList = [];
@@ -84,7 +120,7 @@ class AppFixtures extends Fixture
              // Définit la durée
              $movie->setDuration($faker->numberBetween(20, 300));
              // Définit l'image du film
-             $movie->setPoster($faker->imageUrl(520, 740, $movie->getTitle()));
+             $movie->setPoster("https://source.unsplash.com/random/?funny");
              // Définit une note
              $movie->setRating($faker->randomFloat(1, 0, 5));
              // Définit un court résumé

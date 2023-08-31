@@ -95,3 +95,6 @@ php bin/console cache:clear
 
 ## security
 `composer require symfony/security-bundle`
+
+## lister les routes
+`php bin/console debug:router`

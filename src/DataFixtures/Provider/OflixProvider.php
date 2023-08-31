@@ -446,7 +446,7 @@ class OflixProvider
      */
     public function movieGenre()
     {
-        return $this->genres[mt_rand(0,78)];
+        return $this->genres[array_rand($this->genres)];
     }
 
     /**
