@@ -70,7 +70,13 @@
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" href="#">Profil</a></li>
                                 {% if is_granted("ROLE_MANAGER") %}
-                                    <li><a class="dropdown-item" href="{{path('app_back_movie_index')}}">Backoffice</a></li>
+                                    <li><a class="dropdown-item" href="{{path('app_back_movie_index')}}">
+                                    {% if is_granted("BACK_OFFICE_ACCESS") %}
+                                    Backoffice
+                                    {% else %}
+                                        Rentre chez toi !
+                                    {% endif %}
+                                    </a></li>
                                     <li>
                                 {% endif %}
                                 <li>

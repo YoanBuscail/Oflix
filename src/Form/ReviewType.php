@@ -25,12 +25,12 @@ class ReviewType extends AbstractType
                 ])
             ->add('email', EmailType::class, [
                 'label' => 'Courriel'
-            ])
+                ])
             ->add('content', TextareaType::class, [
                 'label' => 'Critique'
-            ])
+                ])
             ->add('rating', ChoiceType::class, [
-                'choices' => [
+                'choices'  => [
                     'Excellent' => 5,
                     'Très bon' => 4,
                     'Bon' => 3,
@@ -41,19 +41,19 @@ class ReviewType extends AbstractType
             ])
             ->add('reactions', ChoiceType::class, [
                 'choices'  => [
-                    'Rire' => 'Rire',
-                    'Pleurer' => 'Pleurer',
-                    'Réfléchir' => 'Réfléchir',
-                    'Dormir' => 'Dormir',
-                    'Rêver' => 'Rêver',
+                    'Rire' => 'smile',
+                    'Pleurer' => 'cry',
+                    'Réfléchir' => 'think',
+                    'Dormir' => 'sleep',
+                    'Rêver' => 'dream',
                 ],
                 // Les reactions sont un tableau, on aura la possibilité d'avoir plusieurs choix ici
-                'multiple' => true,
-                // Pour que chaque chois soit prit en compte, on ajoute ...
-                'expanded' => true
+                 'multiple' => true,
+                 // Pour que chaque chois soit prit en compte, on ajoute ...
+                 'expanded' => true
             ])
             ->add('watchedAt', DateType::class, [
-                'label' => 'Vous avez vu ci film le ...',
+                'label' => 'Vous avez vu ce film le ...',
                 // Pour indiquer que le format de la propriété $watchedAt est une datetimeimmutable, on ajoute
                 'input' => 'datetime_immutable'
             ])

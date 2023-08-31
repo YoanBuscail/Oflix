@@ -2,16 +2,20 @@
 
 namespace App\Controller\Back;
 
+use DateTimeZone;
 use App\Entity\Movie;
+use DateTimeImmutable;
 use App\Form\MovieType;
 use App\Repository\MovieRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * @Route("/back/movie")
+ * @isGranted("BACK_OFFICE_ACCESS")
  */
 class MovieController extends AbstractController
 {
