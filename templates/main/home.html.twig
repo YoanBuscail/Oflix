@@ -44,8 +44,6 @@
                 {# Ici on va boucler sur la liste des films #}
                 {# Chaque élément du tableau => $movie #}
                 {% for movie in movies %}
-
-                {% dump(movie) %}
                 <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm bg-white position-relative">
                     <div class="col-4 movie__poster" style="background-image: url({{ movie.poster }});">
                         <img src="images/poster-placeholder.png" class="img-fluid">

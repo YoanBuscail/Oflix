@@ -7,11 +7,15 @@ use App\Entity\Movie;
 use DateTimeImmutable;
 use App\Form\MovieType;
 use App\Repository\MovieRepository;
+use App\Service\MyMailerService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 
 /**
  * @Route("/back/movie")
@@ -32,7 +36,7 @@ class MovieController extends AbstractController
     /**
      * @Route("/new", name="app_back_movie_new", methods={"GET", "POST"})
      */
-    public function new(Request $request, MovieRepository $movieRepository): Response
+    public function new(Request $request, MovieRepository $movieRepository, MyMailerService $mailer): Response
     {
         $movie = new Movie();
         $form = $this->createForm(MovieType::class, $movie);
@@ -40,6 +44,10 @@ class MovieController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $movieRepository->add($movie, true);
+
+            // TODO Envoyer un mail au proprio du site pour préciser qu'un film a été crée
+
+            $mailer->alertToAdmin($movie->getTitle(),"movie_created.html.twig",["movie" => $movie]);
 
             $this->addFlash('add', 'Film ajouté! ');
 
