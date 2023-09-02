@@ -24,13 +24,18 @@ class MovieController extends AbstractController
     /**
      * @Route("/movie", name="app_movie_list")
      */
-    public function list(MovieRepository $movieRepository): Response
+    public function list(MovieRepository $movieRepository, Request $request): Response
     {
         // On va récupérer le resultat de la requête customisé qu'on a fait sur le Movie Repository
         $movies = $movieRepository->findAllOrderByTitleAscDql();
 
+        $session = $request->getSession();
+
+        $favoris = $session->get('favoris', []);
+
         return $this->render('movie/list.html.twig',[
             'movies' => $movies,
+            'favoris' => $favoris
         ]);
     }
 

@@ -7,9 +7,17 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Service\FavoriteService;
 
 class FavoritesController extends AbstractController
 {
+    private $favoriteService;
+
+    public function __construct(FavoriteService $favoriteService)
+    {
+        $this->favoriteService = $favoriteService;
+    }
+
     /**
      * @Route("/favorites", name="app_favorites")
      */
@@ -30,20 +38,7 @@ class FavoritesController extends AbstractController
      */
     public function addToFavorite($id, Request $request): Response
     {
-        // Récupérer la session
-        $session = $request->getSession();
-
-        // Récupérer le panier de favoris de la session
-        $favoris = $session->get('favoris', []);
-
-        // Ajouter le film à la liste de favoris s'il n'y est pas déjà
-        if (!in_array($id, $favoris)) {
-            $favoris[] = $id;
-        }
-
-        // Mettre à jour le panier de favoris dans la session
-        $session->set('favoris', $favoris);
-        
+        $this->favoriteService->toggleFavorite($id);
         $this->addFlash('add_to_favorite', 'Film ajouté à la liste des favoris ! ');
 
         return $this->redirectToRoute('app_favorites', ['id' => $id]);
@@ -55,22 +50,21 @@ class FavoritesController extends AbstractController
      */
     public function removeFromFavorite($id, Request $request): Response
     {
-        $session = $request->getSession();
+        $this->favoriteService->toggleFavorite($id);
+        $this->addFlash('remove_from_favorite', 'Film supprimé de la liste des favoris ! ');
 
-        $favoris = $session->get('favoris', []);
+        return $this->redirectToRoute('app_favorites');
+    }
 
-        // Vérifier si l'ID du film à supprimer est présent dans la liste des favoris
-        $key = array_search($id, $favoris);
+    /**
+     * @Route("/favorites/clear", name="app_favorite_clear")
+     *
+     */
+    public function clearFavorite(Request $request): Response
+    {
+        $this->favoriteService->clearFavorites();
+        $this->addFlash('clear_favorite', 'Liste des favoris supprimée !');
 
-        if ($key !== false) {
-            // Si l'ID existe, supprimer de la liste
-            unset($favoris[$key]);
-            
-            // Mettez à jour le panier de favoris dans la session
-            $session->set('favoris', $favoris);
-        }
-
-        // Rediriger vers la page voulue (par exemple, la page de la liste de favoris)
         return $this->redirectToRoute('app_favorites');
     }
 }
