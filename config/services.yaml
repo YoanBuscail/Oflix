@@ -25,3 +25,7 @@ services:
     App\Service\MyMailerService:
         arguments:
             $adminMail: '%env(string:SENDER)%'
+
+    App\Service\OmdbApiService:
+        arguments:
+            $apiKey: '%env(string:API_KEY)%'
