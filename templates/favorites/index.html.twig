@@ -10,42 +10,26 @@
 
         <h2 class="text-muted fw-bold mb-4">Ma liste</h2>
 
-        {% for message in app.flashes('add_to_favorite') %}
-            <div class="alert alert-success">
-                {{ message }}
-            </div>
-        {% endfor %}
+        {% include "fragments/_flash_message.html.twig" %}
 
-        {% for message in app.flashes('remove_from_favorite') %}
-            <div class="alert alert-danger">
-                {{ message }}
-            </div>
-        {% endfor %}
-
-         {% for message in app.flashes('clear_favorite') %}
-            <div class="alert alert-danger">
-                {{ message }}
-            </div>
-        {% endfor %}
-
-        {% if favoris is empty %}
+        {% if favorites is empty %}
             <p>Votre liste de favoris est vide.</p>
         {% else %}
             
-           {% for id in favoris %}
-                {% set film = movieRepository.find(id) %} 
+           {% for movie in favorites %} 
 
                 <div class="col-6">
                     <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm bg-white position-relative">
-                        <div class="col-4 movie__poster" style="background-image: url('{{ film.poster }}');">
+                        <div class="col-4 movie__poster" style="background-image: url('{{ movie.poster }}');">
                             <img src="images/poster-placeholder.png" class="img-fluid">
                         </div>
                         <div class="col-8 p-4 d-flex flex-column position-static">
-                            <a href="{{ path('app_favorite_remove', {'id': id}) }}" class="movie__favorite fs-1 my-2 mx-3 link-danger"><i class="bi bi-bookmark-x-fill"></i></a>
-                            <strong class="d-inline-block mb-2 text-primary">{{ film.type }}</strong>
-                            <h3 class="mb-1">{{ film.title }}</h3>
-                            <div class="mb-1 text-muted">{{ film.duration }} min</div>
-                            <a href="{{ path('app_movie_show', {'id': id}) }}" class="fs-1 mt-3 text-danger align-self-start">
+                            {% include "fragments/_toggle_button.html.twig" %}
+
+                            <strong class="d-inline-block mb-2 text-primary">{{ movie.type }}</strong>
+                            <h3 class="mb-1">{{ movie.title }}</h3>
+                            <div class="mb-1 text-muted">{{ movie.duration }} min</div>
+                            <a href="{{ path('app_movie_show', {'id': movie.id}) }}" class="fs-1 mt-3 text-danger align-self-start">
                                 <i class="bi bi-arrow-right-square"></i>
                             </a>
                         </div>

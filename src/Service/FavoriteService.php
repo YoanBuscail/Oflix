@@ -2,67 +2,88 @@
 
 namespace App\Service;
 
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use App\Entity\Movie;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class FavoriteService
 {
-    private $session;
+    private $requestStack;
 
-    public function __construct(SessionInterface $session)
+    public function __construct(RequestStack $requestStack)
     {
-        $this->session = $session;
+        // Request n'est pas disponible dans les services. A la place, on utilisa RequestStack.
+        $this->requestStack = $requestStack;
     }
 
-    /* public function addFavorite($id)
-    {
-        $favorites = $this->getFavorites();
+    public function add(Movie $movie){
 
-        if (!in_array($id, $favorites)) {
-            $favorites[] = $id;
-            $this->setFavorites($favorites);
+        $session = $this->requestStack->getSession();
+        //  je  créer un tableau depuis ma session ou je recupere ma session qui est déjà un tableau
+        $favorite = $session->get("favorite",[]);
+        //  je rajoute mon film dans le tableau
+        $favorite[$movie->getId()] = $movie;
+        //  je rajoute le tableau dans le tiroir de favoris
+        // ici favorite fonctionne comme un index de tableau et favorite sera sa valeur
+        $session->set("favorite",$favorite);
+
+        return true;
+    }
+
+    public function removeFavorite(Movie $movie)
+    {
+        $session = $this->requestStack->getSession();
+        //  je  créer un tableau depuis ma session ou je recupere ma session qui est déjà un tableau
+        $favorite = $session->get("favorite",[]);
+
+        unset($favorite[$movie->getId()]);
+        //  je rajoute le tableau dans le tiroir de favoris
+        // ici favorite fonctionne comme un index de tableau et favorite sera sa valeur
+        $session->set("favorite",$favorite);
+
+        return true;
+    }
+
+    /**
+     * toggle the movie in the favorite session
+     */
+    public function toggle(Movie $movie){
+
+        $session = $this->requestStack->getSession();
+        //  je  créer un tableau depuis ma session ou je recupere ma session qui est déjà un tableau
+        $favorite = $session->get("favorite",[]);
+
+        // si il est dans les favoris je l'enleve
+        if(isset($favorite[$movie->getId()])){
+            unset($favorite[$movie->getId()]);
+        }else{
+            //  je rajoute mon film dans le tableau
+            $favorite[$movie->getId()] = $movie;
         }
+        //  je rajoute le tableau dans le tiroir de favoris
+        // ici favorite fonctionne comme un index de tableau et favorite sera sa valeur
+        $session->set("favorite",$favorite);
+
+        return true;
     }
 
-    public function removeFavorite($id)
-    {
-        $favorites = $this->getFavorites();
+    /**
+     * Empty all the favorite of the session
+     */
+    public function empty(){
 
-        $key = array_search($id, $favorites);
+        $this->requestStack->getSession()->remove("favorite");
 
-        if ($key !== false) {
-            unset($favorites[$key]);
-            $this->setFavorites($favorites);
-        }
-    } */
-
-    public function toggleFavorite($id)
-    {
-    $favorites = $this->getFavorites();
-
-    $key = array_search($id, $favorites);
-
-    if ($key !== false) {
-        unset($favorites[$key]);
-        } else {
-            $favorites[] = $id;
-        }
-
-    $this->setFavorites($favorites);
     }
 
-    public function clearFavorites()
-    {
-        $this->session->remove('favoris');
-    }
+    /**
+     * get all the favorite from the session
+     */
+    public function getAll(){
 
-    public function getFavorites()
-    {
-        return $this->session->get('favoris', []);
-    }
+        $session = $this->requestStack->getSession();
+        
+        return $session->get("favorite");
 
-    private function setFavorites($favorites)
-    {
-        $this->session->set('favoris', $favorites);
     }
 
 }

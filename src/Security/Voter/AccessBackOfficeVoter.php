@@ -36,7 +36,7 @@ class AccessBackOfficeVoter extends Voter
             $hour = $now->format("H");
 
             // je conditionne l'accès selon l'heure
-            if($hour >= 17 || $hour < 9){
+            if($hour >= 20 || $hour < 9){
                 // je bloque
                 return false;
             }else{

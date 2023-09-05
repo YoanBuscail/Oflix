@@ -50,13 +50,8 @@
                         <!-- img src="https://m.media-amazon.com/images/M/MV5BNThmZGY4NzgtMTM4OC00NzNkLWEwNmEtMjdhMGY5YTc1NDE4XkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg" class="img-fluid" -->
                     </div>
                     <div class="col-8 p-4 d-flex flex-column position-static">
-                    {% if movie.id in favoris %}
-                        {# Le film est déjà dans les favoris, affichez le bouton de suppression #}
-                        <a href="{{ path('app_favorite_remove', {'id': movie.id}) }}" class="movie__favorite fs-1 my-2 mx-3 link-danger"><i class="bi bi-bookmark-x-fill"></i></a>
-                    {% else %}
-                        {# Le film n'est pas dans les favoris, affichez le bouton d'ajout #}
-                        <a href="{{ path('app_favorite_add', {'id': movie.id}) }}" class="movie__favorite fs-1 my-2 mx-3 link-success"><i class="bi bi-bookmark-plus"></i></a>
-                    {% endif %}
+                        {% include "fragments/_toggle_button.html.twig" %}
+
                         <strong class="d-inline-block mb-2 text-primary">{{ movie.type }}</strong>
                         <h3 class="mb-1">{{ movie.title }}</h3>
                         <div class="mb-1 text-muted">{{ movie.duration }} min</div>

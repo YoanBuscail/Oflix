@@ -25,7 +25,3 @@ services:
     App\Service\MyMailerService:
         arguments:
             $adminMail: '%env(string:SENDER)%'
-
-    App\Service\FavoriteService:
-        arguments:
-            $session: '@session'
