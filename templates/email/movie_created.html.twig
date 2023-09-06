@@ -2,5 +2,5 @@
 <p>Le responsable de cette création est : {{app.user.email}}</p>
 {# ici on utilise url car ce template est consulté à l'exterieur de note site #}
 
-<a href="{{url('app_movie_show',{id:movie.id})}}">Cliquez ici pour le voir</a>
+<a href="{{url('app_movie_show',{id:movie.id,slug:movie.slug})}}">Cliquez ici pour le voir</a>
 

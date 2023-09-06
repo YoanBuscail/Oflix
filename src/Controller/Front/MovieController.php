@@ -41,7 +41,7 @@ class MovieController extends AbstractController
 
     /**
      * Ci dessous dans ma route, je dis que j'attends un parametre {id} qui va correspondre à l'index du film que je veux afficher dans le tableau
-     * @Route("/movie/show/{id}", name="app_movie_show")
+     * @Route("/movie/show/{id}/{slug}", name="app_movie_show")
      */
     public function show($id, MovieRepository $movieRepository, CastingRepository $castingRepository, ReviewRepository $reviewRepository)
     {

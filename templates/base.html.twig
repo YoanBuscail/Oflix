@@ -103,6 +103,10 @@
         {% endblock %}
 <!-- Footer -->
 <footer class="container-fluid py-4 border-top text-center">
+        <div class='mb-2 text-muted' >
+            Pour ceux qui ont du goût: <a class="link-secondary" href="{{path('app_movie_show',{id:randomMovie.id,slug:randomMovie.slug})}}">{{randomMovie.title}}</a>
+        </div>
+
         <span class="text-muted">O'flix made with &hearts; at O'clock !
             <br><small>Thème :<a href="" class="link-secondary text-decoration-none"><i class="bi bi-toggle-on mx-1"></i>Netflix</a></small></a>
         </span>
