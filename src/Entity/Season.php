@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\SeasonRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=SeasonRepository::class)
@@ -14,16 +15,19 @@ class Season
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"movies"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="smallint")
+     * @Groups({"movies"})
      */
     private $number;
 
     /**
      * @ORM\Column(type="smallint")
+     * @Groups({"movies"})
      */
     private $episodesNumber;
 

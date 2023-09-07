@@ -7,9 +7,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=MovieRepository::class)
+ * @ORM\HasLifecycleCallbacks()
  */
 class Movie
 {
@@ -17,6 +19,7 @@ class Movie
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"movies"})
      */
     private $id;
 
@@ -24,76 +27,95 @@ class Movie
      * @ORM\Column(type="string", length=255)
      * Ci dessous on ajoute une contrainte de validation => on veut ne veut pas que ce champ soit vide
      * @Assert\NotBlank
+     * @Groups({"movies"})
      */
     private $title;
 
     /**
      * @ORM\Column(type="date")
      * @Assert\NotBlank
+     * @Groups({"movies"})
      */
     private $releaseDate;
 
     /**
      * @ORM\Column(type="integer")
      * @Assert\NotBlank
+     * @Groups({"movies"})
      */
     private $duration;
 
     /**
      * @ORM\OneToMany(targetEntity=Season::class, mappedBy="movie")
      * @Assert\NotBlank
+     * @Groups({"movies"})
      */
     private $seasons;
 
     /**
      * @ORM\Column(type="string", length=10)
      * @Assert\NotBlank
+     * @Groups({"movies"})
      */
     private $type;
 
     /**
      * @ORM\Column(type="string", length=200)
      * @Assert\NotBlank
+     * @Groups({"movies"})
      */
     private $summary;
 
     /**
      * @ORM\Column(type="string", length=5000)
      * @Assert\NotBlank
+     * @Groups({"movies"})
      */
     private $synopsis;
 
     /**
      * @ORM\Column(type="string", length=2083, nullable=true)
      * @Assert\NotBlank
+     * @Groups({"movies"})
      */
     private $poster;
 
     /**
      * @ORM\Column(type="decimal", precision=2, scale=1, nullable=true)
+     * @Groups({"movies"})
      */
     private $rating;
 
     /**
      * @ORM\ManyToMany(targetEntity=Genre::class, inversedBy="movies")
+     * @Groups({"movies"})
      */
     private $genres;
 
     /**
      * @ORM\OneToMany(targetEntity=Casting::class, mappedBy="movie", orphanRemoval=true)
      * @ORM\OrderBy({"credit_order" = "ASC"})
+     * @Groups({"movies"})
      */
     private $castings;
 
     /**
      * @ORM\OneToMany(targetEntity=Review::class, mappedBy="movie")
+     * @Groups({"movies"})
      */
     private $reviews;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"movies"})
      */
     private $slug;
+
+    /**
+     * @ORM\Column(type="datetime_immutable", nullable=true)
+     * @Groups({"movies"})
+     */
+    private $updatedAt;
 
     public function __construct()
     {
@@ -331,6 +353,21 @@ class Movie
     public function setSlug(string $slug): self
     {
         $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * @ORM\PreUpdate
+     */
+    public function setUpdatedAt(): self
+    {
+        $this->updatedAt = new \DateTimeImmutable();
 
         return $this;
     }

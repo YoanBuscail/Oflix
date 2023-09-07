@@ -2,9 +2,10 @@
 
 namespace App\Repository;
 
+use App\Entity\Genre;
 use App\Entity\Movie;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<Movie>
@@ -73,6 +74,18 @@ class MovieRepository extends ServiceEntityRepository
         return $resultSet->fetchAssociative();
     }
 
+
+    public function findByGenre(Genre $genre)
+    {
+        return $this->createQueryBuilder('m')
+            ->join('m.genres', 'g')
+            ->where('g = :genre')
+            ->setParameter('genre', $genre)
+            ->getQuery()
+            ->getResult();
+    }
+
+    
 //    /**
 //     * @return Movie[] Returns an array of Movie objects
 //     */

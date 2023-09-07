@@ -8,6 +8,7 @@ use App\Entity\User;
 use App\Entity\Genre;
 use App\Entity\Movie;
 use App\Entity\Person;
+use App\Entity\Review;
 use App\Entity\Season;
 use App\Entity\Casting;
 use Doctrine\Persistence\ObjectManager;
@@ -158,6 +159,23 @@ class AppFixtures extends Fixture
                 $casting->setPerson($personList[$c]);
                 $manager->persist($casting);
              }
+
+             // ! REVIEWS
+            for ($r=0; $r < mt_rand(0,5); $r++) { 
+                $review = new Review();
+
+                $review->setUsername($faker->userName());
+                $review->setEmail($faker->email());
+                $review->setContent($faker->paragraph());
+                $review->setRating(mt_rand(0,5));
+                $review->setWatchedAt(new \DateTimeImmutable($faker->date()));
+                $review->setReactions($faker->randomElements(["smile","cry","think","sleep","dream"],mt_rand(1,5)));
+
+                $movie->addReview($review);
+
+                $manager->persist($review);
+
+            }
              $manager->persist($movie);
          }
 

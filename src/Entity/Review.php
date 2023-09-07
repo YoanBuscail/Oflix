@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ReviewRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=ReviewRepository::class)
@@ -14,36 +15,43 @@ class Review
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"movies"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=50)
+     * @Groups({"movies"})
      */
     private $username;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"movies"})
      */
     private $email;
 
     /**
      * @ORM\Column(type="text")
+     * @Groups({"movies"})
      */
     private $content;
 
     /**
      * @ORM\Column(type="float")
+     * @Groups({"movies"})
      */
     private $rating;
 
     /**
      * @ORM\Column(type="json")
+     * @Groups({"movies"})
      */
     private $reactions = [];
 
     /**
      * @ORM\Column(type="datetime_immutable")
+     * @Groups({"movies"})
      */
     private $watchedAt;
 

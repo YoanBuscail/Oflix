@@ -31,11 +31,11 @@ class ReviewController extends AbstractController
 
 
             // On associe la review au film concerné
-            $review->setMovie($movie);
+            $movie->addReview($review);
             // On ajoute $review en bdd grace au reviewRepository
             $reviewRepository->add($review, true);
             // Maintenant on peut rediriger vers la page de detail du film
-            return $this->redirectToRoute('app_movie_show', ['id' => $movie->getId()]);
+            return $this->redirectToRoute('app_movie_show', ['id' => $movie->getId(),"slug" => $movie->getSlug()]);
         }
 
 

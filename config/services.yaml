@@ -4,6 +4,8 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
+    env(MAINTENANCE): false
+    app.maintenance: '%env(string:MAINTENANCE)%'
 
 services:
     # default configuration for services in *this* file
@@ -49,3 +51,14 @@ services:
                 # if it doesn't exist, it tries to execute the '__invoke()' method, but you can
                 # configure a custom method name with the 'method' option
                 method: 'slugifyTitle'
+    App\EventListener\ReviewListener:
+        tags:
+            -
+                # these are the options required to define the entity listener
+                name: 'doctrine.orm.entity_listener'
+                event: 'prePersist'
+                entity: 'App\Entity\Review'
+                # by default, Symfony looks for a method called after the event (e.g. postUpdate())
+                # if it doesn't exist, it tries to execute the '__invoke()' method, but you can
+                # configure a custom method name with the 'method' option
+                method: 'updateMovieRating'

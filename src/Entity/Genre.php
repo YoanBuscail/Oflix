@@ -6,9 +6,11 @@ use App\Repository\GenreRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=GenreRepository::class)
+ * @ORM\HasLifecycleCallbacks()
  */
 class Genre
 {
@@ -16,11 +18,15 @@ class Genre
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"movies"})
+     * @Groups({"genres"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=100)
+     * @Groups({"movies"})
+     * @Groups({"genres"})
      */
     private $name;
 
