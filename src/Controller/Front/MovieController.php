@@ -24,7 +24,7 @@ class MovieController extends AbstractController
     /**
      * @Route("/movie", name="app_movie_list")
      */
-    public function list(MovieRepository $movieRepository, Request $request): Response
+    public function list(GenreRepository $genreRepository, MovieRepository $movieRepository, Request $request): Response
     {
         // On va récupérer le resultat de la requête customisé qu'on a fait sur le Movie Repository
         $movies = $movieRepository->findAllOrderByTitleAscDql();
@@ -33,9 +33,12 @@ class MovieController extends AbstractController
 
         $favoris = $session->get('favoris', []);
 
+        $genres = $genreRepository->findAll();
+
         return $this->render('movie/list.html.twig',[
             'movies' => $movies,
-            'favoris' => $favoris
+            'favoris' => $favoris,
+            'genres' => $genres
         ]);
     }
 
@@ -59,5 +62,22 @@ class MovieController extends AbstractController
             'reviews'=> $reviews
         ]);
     } 
+
+    /**
+     * @Route("/movie/search", name="app_movie_search")
+     */
+    public function search(Request $request, MovieRepository $movieRepository): Response
+    {
+        // Récupérez le terme de recherche à partir de la requête
+        $searchTerm = $request->query->get('search');
+
+        // Utilisez le Repository pour rechercher les films correspondants
+        $movies = $movieRepository->findByTitle($searchTerm);
+
+        return $this->render('movie/search.html.twig', [
+            'movies' => $movies,
+            'searchTerm' => $searchTerm,
+        ]);
+}
     
 }

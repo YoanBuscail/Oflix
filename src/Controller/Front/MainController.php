@@ -3,6 +3,7 @@
 namespace App\Controller\Front;
 
 use App\Model\Movies;
+use App\Repository\GenreRepository;
 use App\Repository\MovieRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,7 +18,7 @@ class MainController extends AbstractController
      * 
      * @Route("/", name="app_home", methods={"GET"})
      */
-    public function home(MovieRepository $movieRepository, Request $request)
+    public function home(GenreRepository $genreRepository, MovieRepository $movieRepository, Request $request)
     {
         // On va chercher les données du model Movies à l'aide du getter qu'on a mit en place dans le model Movies
         /* $movies = Movies::getMovies(); */
@@ -27,10 +28,13 @@ class MainController extends AbstractController
 
         $favoris = $session->get('favoris', []);
 
+        $genres = $genreRepository->findAll();
+
         // Retourne la vue home en lui passant le parametre $movies (tableau contenant tous mes films)
         return $this->render("main/home.html.twig", [
             'movies' => $movies,
-            'favoris' => $favoris
+            'favoris' => $favoris,
+            'genres'=> $genres
         ]);
     }
 }

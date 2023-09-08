@@ -28,12 +28,7 @@
                         </p>
                         <p>{{ movie.synopsis }}</p>
                         <div class="d-flex mb-4" style="color: orange;">
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-half"></i>
-                            <span class="ps-1">{{ movie.rating }}</span>
+                            {% include "fragments/_star.html.twig" %}
                         </div>
 
                         {% if movie.type == "Serie" %}
