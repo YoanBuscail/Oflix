@@ -103,3 +103,7 @@ php bin/console cache:clear
 ## serializer
 `composer require symfony/serializer-pack`
 pour installer le serializer : transforme en json
+
+## CORS policy
+Pour faire des requetes à partir d'un domaine différent ou front et back séparés
+`composer require nelmio/cors-bundle`
