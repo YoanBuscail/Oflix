@@ -98,3 +98,8 @@ php bin/console cache:clear
 
 ## lister les routes
 `php bin/console debug:router`
+
+# API
+## serializer
+`composer require symfony/serializer-pack`
+pour installer le serializer : transforme en json

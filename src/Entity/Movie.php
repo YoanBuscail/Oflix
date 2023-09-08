@@ -76,6 +76,7 @@ class Movie
     /**
      * @ORM\Column(type="string", length=2083, nullable=true)
      * @Assert\NotBlank
+     * @Assert\Url
      * @Groups({"movies"})
      */
     private $poster;
