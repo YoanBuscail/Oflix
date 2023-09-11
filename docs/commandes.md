@@ -107,3 +107,11 @@ pour installer le serializer : transforme en json
 ## CORS policy
 Pour faire des requetes à partir d'un domaine différent ou front et back séparés
 `composer require nelmio/cors-bundle`
+
+## Tests
+Créer la BDD
+`php bin/console --env=test doctrine:database:create`
+Créer les tables
+`php bin/console --env=test doctrine:schema:create`
+Remplir la BDD test 
+`php bin/console do:fi:lo --env=test`

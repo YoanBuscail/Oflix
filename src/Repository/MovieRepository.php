@@ -85,11 +85,15 @@ class MovieRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function findByTitle(string $searchTerm): array
+     /**
+     * Get All Movies by search, défault all movies
+     */
+    public function findAllBySearch(?string $search = null)
     {
         return $this->createQueryBuilder('m')
-            ->andWhere('m.title LIKE :searchTerm')
-            ->setParameter('searchTerm', '%' . $searchTerm . '%')
+            ->orderBy("m.title", "ASC")
+            ->where('m.title LIKE :search')
+            ->setParameter('search', '%' . $search . '%')
             ->getQuery()
             ->getResult();
     }
