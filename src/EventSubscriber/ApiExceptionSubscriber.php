@@ -1,0 +1,39 @@
+<?php
+
+namespace App\EventSubscriber;
+
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpKernel\Event\ExceptionEvent;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+
+class ApiExceptionSubscriber implements EventSubscriberInterface
+{
+    public function onKernelException(ExceptionEvent $event): void
+    {
+        $request = $event->getRequest();
+
+        //  Je vérifie que la route commence par api, si c'es pas le cas on stop
+        if (strpos($request->getPathInfo(), "/api/") !== 0) {
+            return;
+        }
+
+        // Je crée une nouvelle réponse mais en json ce coup ci
+        $response = new JsonResponse(
+            [
+                // je mets dedans le code http et le message d'erreur
+                "error" => $event->getThrowable()->getStatusCode(),
+                "message" => $event->getThrowable()->getMessage(),
+            ]
+        );
+
+        // on set la nouvelle réponse
+        $event->setResponse($response);
+    }
+
+    public static function getSubscribedEvents(): array
+    {
+        return [
+            'kernel.exception' => 'onKernelException',
+        ];
+    }
+}
