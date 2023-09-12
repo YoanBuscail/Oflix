@@ -29,15 +29,10 @@ class MovieController extends AbstractController
         //  findAllBySearch, requete custom du repo
         $movies = $movieRepository->findAllBySearch($request->get("search"));
 
-        $session = $request->getSession();
-
-        $favoris = $session->get('favoris', []);
-
         $genres = $genreRepository->findAll();
 
         return $this->render('movie/list.html.twig',[
             'movies' => $movies,
-            'favoris' => $favoris,
             'genres' => $genres
         ]);
     }
