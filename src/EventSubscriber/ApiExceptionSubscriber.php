@@ -17,6 +17,11 @@ class ApiExceptionSubscriber implements EventSubscriberInterface
             return;
         }
 
+         // Si jamais mon erreur est une erreur autres que http, j'arrete le subscriber
+         if($event->getThrowable()->getCode() === 0){
+            return;
+        }
+
         // Je crée une nouvelle réponse mais en json ce coup ci
         $response = new JsonResponse(
             [
