@@ -1,10 +1,6 @@
-Bien sûr, voici un exemple de README pour votre projet Oflix, une plateforme de films réalisée avec Symfony, incluant les fonctionnalités que vous avez mentionnées :
-
 # Oflix - Plateforme de Films
 
-![Oflix Logo](https://votre-url-de-logo.com)
-
-Oflix est une plateforme de films développée avec Symfony. Cette application vous permet de découvrir, évaluer, critiquer et sauvegarder vos films préférés. Elle offre une expérience complète pour les amateurs de cinéma.
+Oflix est une plateforme de films développée avec Symfony pendant ma formation. Cette application vous permet de découvrir, évaluer, critiquer et sauvegarder vos films préférés. Elle offre une expérience complète pour les amateurs de cinéma.
 
 ## Fonctionnalités
 
@@ -33,7 +29,11 @@ Oflix est une plateforme de films développée avec Symfony. Cette application v
 
 ## Captures d'écran
 
+![Capture d'écran 2023-10-06 163942](https://github.com/YoanBuscail/Oflix/assets/131248915/1fe01b6b-0d5e-441a-9a90-2987bb32a24c)
 
+![Capture d'écran 2023-10-06 164159](https://github.com/YoanBuscail/Oflix/assets/131248915/afedcb0e-9d1d-4134-b148-d0f720c0b6fd)
+
+![Capture d'écran 2023-10-06 164244](https://github.com/YoanBuscail/Oflix/assets/131248915/7e646077-8661-46a2-8731-0d3d5c223b0d)
 
 ## Installation
 
@@ -77,9 +77,6 @@ symfony serve
 8. Ouvrez votre navigateur et accédez à l'adresse http://localhost:8000 pour utiliser Oflix localement.
 
 
-
-
-
 ## Personnalisation
 
 Vous pouvez personnaliser Oflix en fonction de vos besoins spécifiques en modifiant les vues, les contrôleurs et les modèles du modèle MVC de Symfony.
@@ -87,4 +84,4 @@ Vous pouvez personnaliser Oflix en fonction de vos besoins spécifiques en modif
 
 ---
 
-Oflix a été développé pour offrir une expérience complète de découverte et d'interaction avec des films. Si vous avez des questions, des suggestions d'amélioration ou besoin d'aide pour personnaliser l'application, n'hésitez pas à nous contacter. Profitez de votre expérience cinématographique sur Oflix ! 🎥🍿
+Oflix a été développé pour offrir une expérience complète de découverte et d'interaction avec des films. Si vous avez des questions, des suggestions d'amélioration ou besoin d'aide pour personnaliser l'application, n'hésitez pas à me contacter. Profitez de votre expérience cinématographique sur Oflix ! 🎥🍿
